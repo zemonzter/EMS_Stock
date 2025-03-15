@@ -7,7 +7,7 @@ import 'package:ems_condb/api_config.dart';
 
 class CheckoutPage extends StatefulWidget {
   final List<Map<String, dynamic>> cartItems;
-  final String token;
+  final String? token;
 
   const CheckoutPage({super.key, required this.cartItems, required this.token});
 

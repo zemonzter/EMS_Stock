@@ -3,17 +3,17 @@ import 'package:ems_condb/util/font.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class buildEQPieChart extends StatelessWidget {
+class buildMTPieChart extends StatelessWidget {
   final String title;
   final String type;
   final String type2;
-  final List<PieChartSectionData> pieEQSections;
-  const buildEQPieChart({
+  final List<PieChartSectionData> pieMTSections;
+  const buildMTPieChart({
     super.key,
     required this.title,
     required this.type,
     required this.type2,
-    required this.pieEQSections,
+    required this.pieMTSections,
   });
 
   @override
@@ -51,7 +51,7 @@ class buildEQPieChart extends StatelessWidget {
                 width: double.infinity,
                 child: PieChart(
                   PieChartData(
-                    sections: pieEQSections,
+                    sections: pieMTSections,
                     sectionsSpace: 0,
                     centerSpaceRadius: 40,
                   ),
@@ -61,22 +61,22 @@ class buildEQPieChart extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (pieEQSections.isNotEmpty) ...[
+                  if (pieMTSections.isNotEmpty) ...[
                     // Check if _pieEQSections is not empty
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         _buildPieChartLegend(
                           type,
-                          AppColors.eqchartColors[0],
-                          '${pieEQSections[0].value.toInt().toString()}%', // Show the actual count
+                          AppColors.mtchartColors[0],
+                          '${pieMTSections[0].value.toInt().toString()}%', // Show the actual count
                         ),
                       ],
                     ),
                     _buildPieChartLegend(
                       type2,
-                      AppColors.eqchartColors[1],
-                      '${pieEQSections[1].value.toInt().toString()}%', // Show the actual count
+                      AppColors.mtchartColors[1],
+                      '${pieMTSections[1].value.toInt().toString()}%', // Show the actual count
                     ),
                   ] else ...[
                     // If _pieEQSections is empty, show a placeholder

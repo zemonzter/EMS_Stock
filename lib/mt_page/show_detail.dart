@@ -15,7 +15,7 @@ class ShowDetail extends StatefulWidget {
   String stock;
   String unit;
   String url;
-  String token;
+  String? token;
 
   ShowDetail({
     super.key,

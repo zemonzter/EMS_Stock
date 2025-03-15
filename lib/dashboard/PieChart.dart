@@ -1,4 +1,5 @@
 import 'package:ems_condb/util/color.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/months.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,8 @@ class buildPieChart extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Kanit', // Set font family to Kanit
+              fontFamily:
+                  Fonts.Fontnormal.fontFamily, // Set font family to Kanit
             ),
           ),
           SizedBox(height: 8),
@@ -76,13 +78,11 @@ class buildPieChart extends StatelessWidget {
                             for (int i = 0; i < months.length; i++)
                               _buildPieChartLegend(
                                 isMobile
-                                    ? MonthNames.getShortMonthName(
-                                      MonthNames.getMonthIndexFromShortName(
-                                        months[i],
-                                      ),
+                                    ? MonthNames.getThaiMonthName(
+                                      MonthNames.getThaiMonthName(months[i]),
                                     )
-                                    : MonthNames.getFullMonthName(
-                                      MonthNames.getMonthIndexFromShortName(
+                                    : MonthNames.getThaiFullMonthName(
+                                      MonthNames.getThaiFullMonthName(
                                         months[i],
                                       ),
                                     ),
@@ -102,13 +102,11 @@ class buildPieChart extends StatelessWidget {
                               if (i < months.length)
                                 _buildPieChartLegend(
                                   isMobile
-                                      ? MonthNames.getShortMonthName(
-                                        MonthNames.getMonthIndexFromShortName(
-                                          months[i],
-                                        ),
+                                      ? MonthNames.getThaiMonthName(
+                                        MonthNames.getThaiMonthName(months[i]),
                                       )
-                                      : MonthNames.getFullMonthName(
-                                        MonthNames.getMonthIndexFromShortName(
+                                      : MonthNames.getThaiFullMonthName(
+                                        MonthNames.getThaiFullMonthName(
                                           months[i],
                                         ),
                                       ),
@@ -192,7 +190,7 @@ class buildPieChart extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Kanit',
+                      fontFamily: Fonts.Fontnormal.fontFamily,
                     ),
                   ), // Set font family to Kanit
                   Text(

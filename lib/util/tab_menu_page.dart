@@ -21,16 +21,16 @@ class _TabMenuPageState extends State<TabMenuPage> {
         child: Scaffold(
           bottomNavigationBar: const TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.home_outlined)),
               Tab(icon: Icon(Icons.dashboard_customize_outlined)),
+              Tab(icon: Icon(Icons.home_outlined)),
               Tab(icon: Icon(Icons.person_outline)),
             ],
           ),
           body: TabBarView(
             children: [
-              Center(child: HomePage(token: widget.token)),
               // const Center(child: Text('Dashboard')),
-              const Center(child: DashboardPage()),
+              Center(child: DashboardPage(token: widget.token)),
+              Center(child: HomePage(token: widget.token)),
               Center(child: UserPage(token: widget.token)),
             ],
           ),

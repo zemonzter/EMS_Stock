@@ -20,4 +20,26 @@ class AppColors {
     Color(0xFFFFE4E1), // Misty Rose
     Color(0xFFD8BFD8), // Thistle
   ];
+
+  static const List<Color> eqchartColors = [
+    Color(0xFFff7c43),
+    Color(0xFFffa600),
+    Color(0xFF003f5c),
+    Color(0xFF665191),
+    Color(0xFF2f4b7c),
+    Color(0xFFa05195),
+    Color(0xFFd45087),
+    Color(0xFFf95d6a),
+    Color(0xFFbc5090),
+    Color(0xFF58508d),
+  ];
+  static const List<Color> mtchartColors = [
+    Color(0xFFf95d6a),
+    Color(0xFF98FB98),
+    Color(0xFFa05195),
+    Color(0xFFd45087),
+    Color(0xFFbc5090),
+    Color(0xFF58508d),
+    Color(0xFF003f5c),
+  ];
 }

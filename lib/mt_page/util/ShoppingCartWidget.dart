@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class ShoppingCartWidget extends StatelessWidget {
-  final String token;
+  final String? token;
   final List<Map<String, dynamic>> cartItems;
   final Function(String) removeFromCart;
 

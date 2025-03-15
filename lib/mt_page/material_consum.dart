@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'checkout/checkout_mt.dart';
 
 class MaterialsPage extends StatefulWidget {
-  final String token;
+  final String? token;
   const MaterialsPage({super.key, required this.token});
 
   @override

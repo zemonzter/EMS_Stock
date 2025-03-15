@@ -1,5 +1,8 @@
+import 'package:ems_condb/util/font.dart';
+import 'package:ems_condb/util/responsive.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import '../util/months.dart';
 
 class buildBarChart extends StatefulWidget {
   final String title;
@@ -58,15 +61,10 @@ class _buildBarChartState extends State<buildBarChart> {
 
       // Determine the year of the current bar group.  We assume your bar groups are sorted chronologically.
       int barGroupYear = -1; // Initialize to an invalid year.
-      List<String> years = [
-        "2021",
-        "2022",
-        "2023",
-        "2024",
-      ]; // Your available years.
+      List<String> years = ["2025", "2024", "2023"]; // Your available years.
       for (int y = 0; y < years.length; y++) {
         int yearStartIndex =
-            y * 12; // Jan of 2021 is index 0, Jan of 2022 is index 12, etc.
+            y * 12; // Jan of 2025 is index 0, Jan of 2022 is index 12, etc.
         if (i >= yearStartIndex && i < yearStartIndex + 12) {
           barGroupYear = int.parse(years[y]);
           break;
@@ -82,9 +80,9 @@ class _buildBarChartState extends State<buildBarChart> {
 
       // --- Start Date Check ---
       if (startYear != null &&
-          startYear != "All" &&
+          startYear != "ทั้งหมด" &&
           startMonth != null &&
-          startMonth != "All") {
+          startMonth != "ทั้งหมด") {
         DateTime startDate = DateTime(
           int.parse(startYear),
           _getMonthIndex(startMonth) + 1,
@@ -95,7 +93,7 @@ class _buildBarChartState extends State<buildBarChart> {
         } else {
           includeGroup = false; // Before the start date.
         }
-      } else if (startYear != null && startYear != "All") {
+      } else if (startYear != null && startYear != "ทั้งหมด") {
         // only year select
         DateTime startDate = DateTime(
           int.parse(startYear),
@@ -115,9 +113,9 @@ class _buildBarChartState extends State<buildBarChart> {
 
       if (includeGroup &&
           endYear != null &&
-          endYear != "All" &&
+          endYear != "ทั้งหมด" &&
           endMonth != null &&
-          endMonth != "All") {
+          endMonth != "ทั้งหมด") {
         DateTime endDate = DateTime(
           int.parse(endYear),
           _getMonthIndex(endMonth) + 1,
@@ -128,7 +126,7 @@ class _buildBarChartState extends State<buildBarChart> {
         } else {
           includeGroup = false; // After the end date
         }
-      } else if (includeGroup && endYear != null && endYear != "All") {
+      } else if (includeGroup && endYear != null && endYear != "ทั้งหมด") {
         // only year select
         DateTime endDate = DateTime(
           int.parse(endYear),
@@ -176,7 +174,7 @@ class _buildBarChartState extends State<buildBarChart> {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Kanit',
+                  fontFamily: Fonts.Fontnormal.fontFamily,
                 ),
               ),
               IconButton(
@@ -187,7 +185,9 @@ class _buildBarChartState extends State<buildBarChart> {
                       return AlertDialog(
                         title: Text(
                           'เลือกแสดงข้อมูล',
-                          style: TextStyle(fontFamily: 'Kanit'),
+                          style: TextStyle(
+                            fontFamily: Fonts.Fontnormal.fontFamily,
+                          ),
                         ),
                         content: StatefulBuilder(
                           builder: (context, setStateDialog) {
@@ -198,12 +198,14 @@ class _buildBarChartState extends State<buildBarChart> {
                                 // Start Year Dropdown
                                 DropdownButton<String>(
                                   hint: Text(
-                                    "Select Start Year",
-                                    style: TextStyle(fontFamily: 'Kanit'),
+                                    "เลือกปีที่ต้องการ",
+                                    style: TextStyle(
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
                                   ),
                                   value: selectedStartYear,
                                   items:
-                                      ["All", "2021", "2022", "2023", "2024"]
+                                      ["ทั้งหมด", "2025", "2024", "2023"]
                                           .map<DropdownMenuItem<String>>(
                                             (String value) =>
                                                 DropdownMenuItem<String>(
@@ -211,7 +213,10 @@ class _buildBarChartState extends State<buildBarChart> {
                                                   child: Text(
                                                     value,
                                                     style: TextStyle(
-                                                      fontFamily: 'Kanit',
+                                                      fontFamily:
+                                                          Fonts
+                                                              .Fontnormal
+                                                              .fontFamily,
                                                     ),
                                                   ),
                                                 ),
@@ -236,7 +241,7 @@ class _buildBarChartState extends State<buildBarChart> {
                                 // DropdownButton<String>(
                                 //   hint: Text(
                                 //     "Select End Year",
-                                //     style: TextStyle(fontFamily: 'Kanit'),
+                                //     style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily,),
                                 //   ),
                                 //   value: selectedEndYear,
                                 //   items:
@@ -248,7 +253,7 @@ class _buildBarChartState extends State<buildBarChart> {
                                 //                   child: Text(
                                 //                     value,
                                 //                     style: TextStyle(
-                                //                       fontFamily: 'Kanit',
+                                //                       fontFamily: Fonts.Fontnormal.fontFamily,
                                 //                     ),
                                 //                   ),
                                 //                 ),
@@ -272,12 +277,32 @@ class _buildBarChartState extends State<buildBarChart> {
                                 // Start Month Dropdown
                                 DropdownButton<String>(
                                   hint: Text(
-                                    "Select Start Month",
-                                    style: TextStyle(fontFamily: 'Kanit'),
+                                    "เลือกเดือนเริ่มต้น",
+                                    style: TextStyle(
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
                                   ),
                                   value: selectedStartMonth,
                                   items:
-                                      ["All", ...widget.months]
+                                      [
+                                            Responsive.isMobile(context)
+                                                ? "ทั้งหมด"
+                                                : "ทั้งหมด", // Add "ทั้งหมด" conditionally
+                                            ...widget.months
+                                                .map(
+                                                  (englishMonth) =>
+                                                      Responsive.isMobile(
+                                                            context,
+                                                          )
+                                                          ? MonthNames.getThaiMonthName(
+                                                            englishMonth,
+                                                          ) // Short name for mobile
+                                                          : MonthNames.getThaiFullMonthName(
+                                                            englishMonth,
+                                                          ), // Full name for other screens
+                                                )
+                                                .toList(),
+                                          ]
                                           .map<DropdownMenuItem<String>>(
                                             (String value) =>
                                                 DropdownMenuItem<String>(
@@ -285,7 +310,10 @@ class _buildBarChartState extends State<buildBarChart> {
                                                   child: Text(
                                                     value,
                                                     style: TextStyle(
-                                                      fontFamily: 'Kanit',
+                                                      fontFamily:
+                                                          Fonts
+                                                              .Fontnormal
+                                                              .fontFamily,
                                                     ),
                                                   ),
                                                 ),
@@ -308,12 +336,24 @@ class _buildBarChartState extends State<buildBarChart> {
                                 // End Month Dropdown
                                 DropdownButton<String>(
                                   hint: Text(
-                                    "Select End Month",
-                                    style: TextStyle(fontFamily: 'Kanit'),
+                                    "เลือกเดือนสิ้นสุด",
+                                    style: TextStyle(
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
                                   ),
                                   value: selectedEndMonth,
                                   items:
-                                      ["All", ...widget.months]
+                                      [
+                                            "ทั้งหมด",
+                                            ...widget.months
+                                                .map(
+                                                  (englishMonth) =>
+                                                      MonthNames.getThaiFullMonthName(
+                                                        englishMonth,
+                                                      ),
+                                                )
+                                                .toList(),
+                                          ]
                                           .map<DropdownMenuItem<String>>(
                                             (String value) =>
                                                 DropdownMenuItem<String>(
@@ -321,7 +361,10 @@ class _buildBarChartState extends State<buildBarChart> {
                                                   child: Text(
                                                     value,
                                                     style: TextStyle(
-                                                      fontFamily: 'Kanit',
+                                                      fontFamily:
+                                                          Fonts
+                                                              .Fontnormal
+                                                              .fontFamily,
                                                     ),
                                                   ),
                                                 ),
@@ -360,8 +403,10 @@ class _buildBarChartState extends State<buildBarChart> {
                               Navigator.of(context).pop();
                             },
                             child: Text(
-                              'OK',
-                              style: TextStyle(fontFamily: 'Kanit'),
+                              'ตกลง',
+                              style: TextStyle(
+                                fontFamily: Fonts.Fontnormal.fontFamily,
+                              ),
                             ),
                           ),
                         ],
@@ -388,9 +433,6 @@ class _buildBarChartState extends State<buildBarChart> {
                         final int filteredIndex = value.toInt();
                         if (filteredIndex >= 0 &&
                             filteredIndex < _filteredBarGroups.length) {
-                          // Map the *filtered* index back to the original month index.  This is
-                          // essential because _filteredBarGroups might only contain a subset of the months.
-                          // Find the original index of the filtered group:
                           int originalIndex = -1;
 
                           //Need to find the original index of the bar group, before filtering.
@@ -403,10 +445,15 @@ class _buildBarChartState extends State<buildBarChart> {
                           }
 
                           if (originalIndex != -1) {
+                            String monthName = widget.months[originalIndex];
                             return Text(
-                              widget.months[originalIndex %
-                                  12], //Use the original index
-                              style: TextStyle(fontFamily: 'Kanit'),
+                              Responsive.isMobile(context)
+                                  ? MonthNames.getThaiMonthName(
+                                    monthName,
+                                  ) // Show short Thai month name
+                                  : MonthNames.getThaiFullMonthName(
+                                    monthName,
+                                  ), // Show Thai month name
                             );
                           }
                         }
@@ -422,7 +469,9 @@ class _buildBarChartState extends State<buildBarChart> {
                         if (value % 2 == 0) {
                           return Text(
                             '${value.toInt()}',
-                            style: TextStyle(fontFamily: 'Kanit'),
+                            style: TextStyle(
+                              fontFamily: Fonts.Fontnormal.fontFamily,
+                            ),
                           );
                         } else {
                           return const Text('');
@@ -453,6 +502,7 @@ class _buildBarChartState extends State<buildBarChart> {
                         TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       );
                     },

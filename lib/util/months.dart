@@ -75,4 +75,45 @@ class MonthNames {
       return "Invalid Month";
     }
   }
+
+  //ในไฟล์ month.dart เพิ่มส่วนนี้เข้าไป
+  static const Map<String, String> englishToThaiMonth = {
+    "Jan": "ม.ค.",
+    "Feb": "ก.พ.",
+    "Mar": "มี.ค.",
+    "Apr": "เม.ย.",
+    "May": "พ.ค.",
+    "Jun": "มิ.ย.",
+    "Jul": "ก.ค.",
+    "Aug": "ส.ค.",
+    "Sep": "ก.ย.",
+    "Oct": "ต.ค.",
+    "Nov": "พ.ย.",
+    "Dec": "ธ.ค.",
+  };
+
+  static const Map<String, String> englishToThaiFullMonth = {
+    "Jan": "มกราคม",
+    "Feb": "กุมภาพันธ์",
+    "Mar": "มีนาคม",
+    "Apr": "เมษายน",
+    "May": "พฤษภาคม",
+    "Jun": "มิถุนายน",
+    "Jul": "กรกฎาคม",
+    "Aug": "สิงหาคม",
+    "Sep": "กันยายน",
+    "Oct": "ตุลาคม",
+    "Nov": "พฤศจิกายน",
+    "Dec": "ธันวาคม",
+  };
+
+  static String getThaiMonthName(String englishMonth) {
+    return englishToThaiMonth[englishMonth] ??
+        englishMonth; // Return English if no Thai match
+  }
+
+  static String getThaiFullMonthName(String englishMonth) {
+    return englishToThaiFullMonth[englishMonth] ??
+        englishMonth; // Return English if no Thai match
+  }
 }

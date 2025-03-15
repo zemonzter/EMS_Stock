@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import '../user_page/settings/setting_eq/inserteqt.dart';
 
 class MaterialHome extends StatefulWidget {
-  final String token;
+  final String? token;
   const MaterialHome({super.key, required this.token});
 
   @override

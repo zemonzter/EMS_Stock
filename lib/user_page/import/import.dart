@@ -18,6 +18,24 @@ class ImportPage extends StatefulWidget {
 
 class _ImportPageState extends State<ImportPage> {
   List<List<dynamic>> _data = [];
+  //  bool _duplicateWarningShown = false;
+
+  Future<bool> _checkDuplicateMTName(String mtname) async {
+    String url = "${baseUrl}check_duplicate_mtname.php?mtname=$mtname";
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['duplicate'] == true;
+      } else {
+        print('Failed to check duplicate mtname: ${response.statusCode}');
+        return false; // Assume duplicate to prevent upload in case of error
+      }
+    } catch (e) {
+      print('Error checking duplicate mtname: $e');
+      return false; // Assume duplicate to prevent upload in case of error
+    }
+  }
 
   Future<void> uploadData() async {
     if (_data.isEmpty) {
@@ -27,8 +45,30 @@ class _ImportPageState extends State<ImportPage> {
     String url = "${baseUrl}import_mt.php"; // Your PHP script URL
     try {
       for (int i = 1; i < _data.length; i++) {
-        // Skip header row (index 0)
         var row = _data[i];
+        var mtname = row.length > 1 ? row[1].toString() : "";
+
+        if (await _checkDuplicateMTName(mtname)) {
+          // if (mounted && !_duplicateWarningShown) {
+          // _duplicateWarningShown = true;
+          if (mounted) {
+            await showDialog(
+              context: context,
+              builder:
+                  (context) => AlertDialog(
+                    title: const Text('ชื่อวัสดุซ้ำ'),
+                    content: Text('ชื่อวัสดุ $mtname มีอยู่แล้วในระบบ'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('ตกลง'),
+                      ),
+                    ],
+                  ),
+            );
+          }
+          continue;
+        }
         var request = http.MultipartRequest('POST', Uri.parse(url));
 
         // Add data fields to the request
@@ -64,15 +104,22 @@ class _ImportPageState extends State<ImportPage> {
         }
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data uploaded successfully!')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Data uploaded successfully!')),
+        );
+      }
     } catch (e) {
       print('Error uploading data: $e');
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error uploading data: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error uploading data: $e')));
+      }
     }
+    // finally {
+    //   _duplicateWarningShown = false; // Reset ตัวแปรเมื่ออัปโหลดเสร็จ
+    // }
   }
 
   @override
@@ -141,9 +188,11 @@ class _ImportPageState extends State<ImportPage> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: ElevatedButton(
-                onPressed: () {
-                  uploadData();
-                  Navigator.pop(context);
+                onPressed: () async {
+                  await uploadData();
+                  if (mounted) {
+                    Navigator.pop(context);
+                  }
                 },
                 child: const Text("อัปโหลดข้อมูล"),
               ),

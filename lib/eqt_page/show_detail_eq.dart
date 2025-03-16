@@ -424,70 +424,72 @@ class _ShowDetailState extends State<ShowDetail> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => EditEquipmentPage(
-                                  onRefresh: () {
-                                    // Use the getRecord from ShowDetail, if available.
-                                    if (widget.getRecord != null) {
-                                      widget.getRecord!();
-                                    }
-                                  },
-                                  hnId: widget.id,
-                                ),
-                          ),
-                        );
-                      },
-                      child: const Text("แก้ไข"),
-                    ),
-                    const SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text(
-                                'ยืนยันการลบประเภทครุภัณฑ์',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              content: const Text(
-                                'คุณแน่ใจหรือไม่ว่าต้องการลบประเภทครุภัณฑ์นี้?',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    _deleteEquipment(context);
-                                  },
-                                  child: const Text('ยืนยัน'),
-                                ),
-                                TextButton(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  child: const Text('ยกเลิก'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red[600],
+                if (userRole == 'Admin')
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => EditEquipmentPage(
+                                    onRefresh: () {
+                                      // Use the getRecord from ShowDetail, if available.
+                                      if (widget.getRecord != null) {
+                                        widget.getRecord!();
+                                      }
+                                    },
+                                    hnId: widget.id,
+                                  ),
+                            ),
+                          );
+                        },
+                        child: const Text("แก้ไข"),
                       ),
-                      child: const Text(
-                        'ลบ',
-                        style: TextStyle(color: Colors.white),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                  'ยืนยันการลบประเภทครุภัณฑ์',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                content: const Text(
+                                  'คุณแน่ใจหรือไม่ว่าต้องการลบประเภทครุภัณฑ์นี้?',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      _deleteEquipment(context);
+                                    },
+                                    child: const Text('ยืนยัน'),
+                                  ),
+                                  TextButton(
+                                    onPressed:
+                                        () => Navigator.of(context).pop(),
+                                    child: const Text('ยกเลิก'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red[600],
+                        ),
+                        child: const Text(
+                          'ลบ',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
               ],
             ),
           ),

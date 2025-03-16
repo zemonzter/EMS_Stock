@@ -243,7 +243,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Checkout',
+          'เบิกวัสดุ',
           style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
         ),
       ),

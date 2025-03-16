@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 50),
                       ElevatedButton(
                         onPressed: _login,
-                        child: const Text('ล็อกอิน'),
+                        child: const Text('เข้าสู่ระบบ'),
                       ),
                     ],
                   ),

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:ems_condb/api_config.dart';
 import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -47,7 +46,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
 
   // Fetch the equipment list from the API
   Future<void> _fetchEqList() async {
-    String uri = "${baseUrl}view_eq.php";
+    String uri = "${baseUrl}view_equipment.php";
     try {
       var response = await http.get(Uri.parse(uri));
       if (response.statusCode == 200) {
@@ -77,9 +76,9 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
         searchText.toLowerCase(); // แปลงข้อความค้นหาเป็นตัวพิมพ์เล็ก
     return _eqList
         .where(
-          (element) => element['eq_serial']
+          (element) => element['HN_id']
               .toString()
-              .toLowerCase() // แปลงค่าใน 'eq_serial' เป็นตัวพิมพ์เล็ก
+              .toLowerCase() // แปลงค่าใน 'HN_id' เป็นตัวพิมพ์เล็ก
               .contains(lowerSearchText),
         )
         .toList();
@@ -90,7 +89,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
 
     // Find the equipment with the matching eqid
     var eqData = _eqList.firstWhere(
-      (element) => element['eq_serial'] == eqId,
+      (element) => element['HN_id'] == eqId,
       orElse: () => null, // Return null if no match is found
     );
 
@@ -100,7 +99,8 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
         if (mounted) {
           // Check if the widget is still mounted
           setState(() {
-            eqname.text = "${eqData['eq_brand']} ${eqData['eq_model']}";
+            eqname.text =
+                "${eqData['eq_name']} ${eqData['eq_brand']} ${eqData['eq_model']}";
           });
         }
       });
@@ -266,7 +266,6 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
 
   @override
   Widget build(BuildContext context) {
-    // Remove the outer MaterialApp.  MaintenanceForm should NOT have its own MaterialApp.
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -301,7 +300,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                       optionsBuilder: (TextEditingValue textEditingValue) {
                         return _filterEqList(
                           textEditingValue.text,
-                        ).map((item) => item['eq_serial'].toString());
+                        ).map((item) => item['HN_id'].toString());
                       },
                       onSelected: (String selection) {
                         // Use addPostFrameCallback here.  VERY IMPORTANT!
@@ -476,7 +475,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                         // print($image_path_for_db)
                       },
                       child: Text(
-                        'Choose image',
+                        'เลือกรูปภาพ',
                         style: TextStyle(
                           fontFamily: Fonts.Fontnormal.fontFamily,
                         ),

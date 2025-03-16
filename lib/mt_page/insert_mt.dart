@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ems_condb/api_config.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -78,10 +79,10 @@ class _InsertMTState extends State<InsertMT> {
         print(e);
         Navigator.pop(context, true);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
               'เพิ่มข้อมูลวัสดุสำเร็จ',
-              style: TextStyle(fontFamily: 'mali'),
+              style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
             ),
             backgroundColor: Colors.green,
           ),
@@ -89,10 +90,10 @@ class _InsertMTState extends State<InsertMT> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(
             'กรุณากรอกข้อมูลให้ครบถ้วน',
-            style: TextStyle(fontFamily: 'mali'),
+            style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
           ),
         ),
       );
@@ -165,7 +166,7 @@ class _InsertMTState extends State<InsertMT> {
             "เพิ่มวัสดุ",
             style: TextStyle(
               color: Colors.white,
-              fontFamily: GoogleFonts.mali().fontFamily,
+              fontFamily: Fonts.Fontnormal.fontFamily,
             ),
           ),
           backgroundColor: const Color(0xFF7E0101),
@@ -194,7 +195,7 @@ class _InsertMTState extends State<InsertMT> {
                                 label: Text(
                                   "ประเภทวัสดุ",
                                   style: TextStyle(
-                                    fontFamily: GoogleFonts.mali().fontFamily,
+                                    fontFamily: Fonts.Fontnormal.fontFamily,
                                   ),
                                 ),
                               ),
@@ -211,7 +212,7 @@ class _InsertMTState extends State<InsertMT> {
                               hint: Text(
                                 "Select Item",
                                 style: TextStyle(
-                                  fontFamily: GoogleFonts.mali().fontFamily,
+                                  fontFamily: Fonts.Fontnormal.fontFamily,
                                 ),
                               ),
                               items:
@@ -222,7 +223,7 @@ class _InsertMTState extends State<InsertMT> {
                                         e.mttypeName.toString(),
                                         style: TextStyle(
                                           fontFamily:
-                                              GoogleFonts.mali().fontFamily,
+                                              Fonts.Fontnormal.fontFamily,
                                         ),
                                       ),
                                     );
@@ -253,7 +254,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "ชื่อวัสดุ",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -274,7 +275,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "จำนวน",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -307,7 +308,7 @@ class _InsertMTState extends State<InsertMT> {
                   //               label: Text(
                   //                 "หน่วยนับ",
                   //                 style: TextStyle(
-                  //                   fontFamily: GoogleFonts.mali().fontFamily,
+                  //                   fontFamily: Fonts.Fontnormal.fontFamily
                   //                 ),
                   //               ),
                   //             ),
@@ -324,7 +325,7 @@ class _InsertMTState extends State<InsertMT> {
                   //             hint: Text(
                   //               "Select Item",
                   //               style: TextStyle(
-                  //                 fontFamily: GoogleFonts.mali().fontFamily,
+                  //                 fontFamily: Fonts.Fontnormal.fontFamily
                   //               ),
                   //             ),
                   //             items:
@@ -335,7 +336,7 @@ class _InsertMTState extends State<InsertMT> {
                   //                       e.unitName.toString(),
                   //                       style: TextStyle(
                   //                         fontFamily:
-                  //                             GoogleFonts.mali().fontFamily,
+                  //                             Fonts.Fontnormal.fontFamily
                   //                       ),
                   //                     ),
                   //                   );
@@ -364,7 +365,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "หน่วยนับ",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -385,7 +386,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "หน่วยละ",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -411,7 +412,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "จำนวนเงิน",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -437,7 +438,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "วันที่ซื้อ",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -477,7 +478,7 @@ class _InsertMTState extends State<InsertMT> {
                       label: Text(
                         "ลิงค์ข้อมูลเพิ่มเติม",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -501,9 +502,7 @@ class _InsertMTState extends State<InsertMT> {
                     },
                     child: Text(
                       'Choose image',
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.mali().fontFamily,
-                      ),
+                      style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                     ),
                   ),
 
@@ -523,7 +522,7 @@ class _InsertMTState extends State<InsertMT> {
                             'ยืนยัน',
                             style: TextStyle(
                               color: Colors.white,
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                              fontFamily: Fonts.Fontnormal.fontFamily,
                             ),
                           ),
                         ),
@@ -535,7 +534,7 @@ class _InsertMTState extends State<InsertMT> {
                           child: Text(
                             'ยกเลิก',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                              fontFamily: Fonts.Fontnormal.fontFamily,
                             ),
                           ),
                         ),

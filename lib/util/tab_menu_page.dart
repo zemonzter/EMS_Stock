@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../page/dashboard.dart';
 import '../page/user_page.dart';
-import '../test/navbar.dart';
+import '../util/navbar.dart';
 
 class TabMenuPage extends StatefulWidget {
   final String token;

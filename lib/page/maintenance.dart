@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ems_condb/api_config.dart';
 import 'package:ems_condb/mainten_page/admin_maintenance.dart';
 import 'package:ems_condb/mainten_page/mainten_report.dart'; // Import MaintenanceReport
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -88,7 +89,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
           "แจ้งซ่อม",
           style: TextStyle(
             color: Colors.white,
-            fontFamily: GoogleFonts.mali().fontFamily,
+            fontFamily: Fonts.Fontnormal.fontFamily,
           ),
         ),
         backgroundColor: const Color(0xFF7E0101),
@@ -151,7 +152,7 @@ class _MaintenancePageState extends State<MaintenancePage> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.mali().fontFamily,
+                fontFamily: Fonts.Fontnormal.fontFamily,
               ),
               textAlign: TextAlign.center, // Center text horizontally
             ),

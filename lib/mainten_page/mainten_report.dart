@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ems_condb/api_config.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -144,7 +145,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           "แจ้งซ่อม",
           style: TextStyle(
             color: Colors.white,
-            fontFamily: GoogleFonts.mali().fontFamily,
+            fontFamily: Fonts.Fontnormal.fontFamily,
           ),
         ),
         backgroundColor: const Color(0xFF7E0101),
@@ -159,7 +160,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           //             title: Text(
           //               'เลือกเงื่อนไข',
           //               style: TextStyle(
-          //                 fontFamily: GoogleFonts.mali().fontFamily,
+          //                 fontFamily: Fonts.Fontnormal.fontFamily,
           //               ),
           //             ),
           //             content: StatefulBuilder(
@@ -182,7 +183,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           //                           child: Text(
           //                             "ทั้งหมด",
           //                             style: TextStyle(
-          //                               fontFamily: GoogleFonts.mali().fontFamily,
+          //                               fontFamily: Fonts.Fontnormal.fontFamily,
           //                             ),
           //                           ),
           //                         ),
@@ -191,7 +192,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           //                           child: Text(
           //                             "ข้อมูลการสั่งซ่อมของฉัน",
           //                             style: TextStyle(
-          //                               fontFamily: GoogleFonts.mali().fontFamily,
+          //                               fontFamily: Fonts.Fontnormal.fontFamily,
           //                             ),
           //                           ),
           //                         ),
@@ -207,7 +208,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           //                       hint: Text(
           //                         "เลือกสถานะ",
           //                         style: TextStyle(
-          //                           fontFamily: GoogleFonts.mali().fontFamily,
+          //                           fontFamily: Fonts.Fontnormal.fontFamily,
           //                         ),
           //                       ),
           //                       onChanged: (String? newValue) {
@@ -245,7 +246,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           //                 child: Text(
           //                   'ตกลง',
           //                   style: TextStyle(
-          //                     fontFamily: GoogleFonts.mali().fontFamily,
+          //                     fontFamily: Fonts.Fontnormal.fontFamily,
           //                   ),
           //                 ),
           //               ),
@@ -256,7 +257,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
           //                 child: Text(
           //                   'ยกเลิก',
           //                   style: TextStyle(
-          //                     fontFamily: GoogleFonts.mali().fontFamily,
+          //                     fontFamily: Fonts.Fontnormal.fontFamily,
           //                   ),
           //                 ),
           //               ),
@@ -316,7 +317,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                           child: Text(
                             "ทั้งหมด",
                             style: TextStyle(
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                              fontFamily: Fonts.Fontnormal.fontFamily,
                             ),
                           ),
                         ),
@@ -325,7 +326,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                           child: Text(
                             "ข้อมูลการสั่งซ่อมของฉัน",
                             style: TextStyle(
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                              fontFamily: Fonts.Fontnormal.fontFamily,
                             ),
                           ),
                         ),
@@ -343,7 +344,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                       hint: Text(
                         "เลือกสถานะ",
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       onChanged: (String? newValue) {
@@ -362,7 +363,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                               child: Text(
                                 status['mainten_status'],
                                 style: TextStyle(
-                                  fontFamily: GoogleFonts.mali().fontFamily,
+                                  fontFamily: Fonts.Fontnormal.fontFamily,
                                 ),
                               ),
                             );
@@ -381,7 +382,7 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                             child: Text(
                               'ไม่มีข้อมูล',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.mali().fontFamily,
+                                fontFamily: Fonts.Fontnormal.fontFamily,
                               ),
                             ),
                           )
@@ -468,7 +469,8 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontFamily:
-                                                              GoogleFonts.mali()
+                                                              Fonts
+                                                                  .Fontnormal
                                                                   .fontFamily,
                                                         ),
                                                         textAlign:
@@ -485,7 +487,8 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontFamily:
-                                                              GoogleFonts.mali()
+                                                              Fonts
+                                                                  .Fontnormal
                                                                   .fontFamily,
                                                         ),
                                                         textAlign:
@@ -499,7 +502,8 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                                                         style: TextStyle(
                                                           fontSize: 16,
                                                           fontFamily:
-                                                              GoogleFonts.mali()
+                                                              Fonts
+                                                                  .Fontnormal
                                                                   .fontFamily,
                                                         ),
                                                         textAlign:
@@ -531,7 +535,8 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                                                               ? 16
                                                               : 18,
                                                       fontFamily:
-                                                          GoogleFonts.mali()
+                                                          Fonts
+                                                              .Fontnormal
                                                               .fontFamily,
                                                     ),
                                                     textAlign: TextAlign.start,
@@ -565,7 +570,8 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                                                                 ? 16
                                                                 : 18,
                                                         fontFamily:
-                                                            GoogleFonts.mali()
+                                                            Fonts
+                                                                .Fontnormal
                                                                 .fontFamily,
                                                       ),
                                                       textAlign:
@@ -590,7 +596,8 @@ class _MaintenanceReportState extends State<MaintenanceReport> {
                                                               ? 16
                                                               : 18,
                                                       fontFamily:
-                                                          GoogleFonts.mali()
+                                                          Fonts
+                                                              .Fontnormal
                                                               .fontFamily,
                                                     ),
                                                     textAlign: TextAlign.start,

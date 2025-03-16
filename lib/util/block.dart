@@ -1,3 +1,4 @@
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -96,7 +97,7 @@ class BlockDetail extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: fontSize,
-                        fontFamily: GoogleFonts.mali().fontFamily,
+                        fontFamily: Fonts.Fontnormal.fontFamily,
                       ),
                     ),
                   ),

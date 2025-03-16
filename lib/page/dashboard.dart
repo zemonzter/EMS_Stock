@@ -3,9 +3,7 @@ import 'package:ems_condb/api_config.dart';
 import 'package:ems_condb/dashboard/BarChart.dart';
 import 'package:ems_condb/dashboard/pieEQchart.dart';
 import 'package:ems_condb/dashboard/pieMTChart.dart';
-import 'package:ems_condb/mainten_page/admin_maintenance.dart';
 import 'package:ems_condb/mainten_page/mainten_report.dart';
-import 'package:ems_condb/mt_page/checkout/admin_ap.dart';
 import 'package:ems_condb/mt_page/checkout/checkout_mt_report.dart';
 import 'package:ems_condb/page/equipment.dart';
 import 'package:ems_condb/page/material.dart';
@@ -16,8 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
 import '../dashboard/PieChart.dart';
-
-//
 
 class DashboardPage extends StatefulWidget {
   final String? token;
@@ -372,115 +368,143 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  Widget _buildStatBox({
+    required Color color,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: Container(
+        // Remove width, keep height (or adjust as needed)
+        height: 120, // Height is now fixed
+        margin: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Center(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.Fontnormal.fontFamily,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildStatBoxes() {
+    List<Widget> boxes = [
+      _buildStatBox(
+        color: Colors.purple[300]!,
+        title:
+            Responsive.isMobile(context)
+                ? 'จำนวนการเบิก\nวัสดุทั้งหมด: $_totalOrderCount'
+                : 'จำนวนการเบิกวัสดุทั้งหมด:  $_totalOrderCount',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => CheckoutMtReport()),
+          );
+        },
+      ),
+      _buildStatBox(
+        color: Colors.green[300]!,
+        title:
+            Responsive.isMobile(context)
+                ? 'จำนวนการแจ้ง\nซ่อมทั้งหมด: $_totalMaintenCount'
+                : 'จำนวนการแจ้งซ่อมทั้งหมด: $_totalMaintenCount',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MaintenanceReport(token: widget.token),
+            ),
+          );
+        },
+      ),
+      _buildStatBox(
+        color: Colors.orange[300]!,
+        title:
+            Responsive.isMobile(context)
+                ? 'จำนวนครุภัณฑ์\nทั้งหมด: $_totalEqCount'
+                : 'จำนวนครุภัณฑ์ทั้งหมด:  $_totalEqCount',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EquipmentPage(token: widget.token),
+            ),
+          );
+        },
+      ),
+      _buildStatBox(
+        color: Colors.pink[300]!,
+        title:
+            Responsive.isMobile(context)
+                ? 'จำนวน\nวัสดุทั้งหมด: $_totalMtCount'
+                : 'จำนวนวัสดุทั้งหมด:  $_totalMtCount',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MaterialHome(token: widget.token),
+            ),
+          );
+        },
+      ),
+    ];
+
+    if (Responsive.isMobile(context)) {
+      // Wrap in rows of 2 for mobile
+      List<Widget> rows = [];
+      for (int i = 0; i < boxes.length; i += 2) {
+        List<Widget> rowChildren = [];
+        rowChildren.add(boxes[i]);
+        if (i + 1 < boxes.length) {
+          rowChildren.add(boxes[i + 1]);
+        }
+        rows.add(
+          Row(
+            children: rowChildren,
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween, // Use spaceBetween
+          ),
+        );
+      }
+      return rows;
+    } else {
+      return boxes;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment:
-              MainAxisAlignment
-                  .start, // Or MainAxisAlignment.start if you want spacing at the end
-          children: [
-            Text(
-              'รายงานสรุป',
-              style: TextStyle(fontFamily: Fonts.FontBold.fontFamily),
-            ),
-            if (userRole == 'Admin' || userRole == 'Officer')
-              SizedBox(
-                width: 160,
-                child: Container(
-                  margin: const EdgeInsets.only(left: 16),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-
-                  child: Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AdminPage(),
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.circle,
-                          color: Colors.purple[300],
-                          size: 16,
-                        ),
-                        label: Text(
-                          'การเบิกวัสดุ',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: Fonts.Fontnormal.fontFamily,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            if (userRole == 'Engineer' || userRole == 'Admin')
-              Container(
-                margin: const EdgeInsets.only(left: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-
-                child: Row(
-                  children: [
-                    TextButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) =>
-                                    AdminMaintenance(token: widget.token),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.circle,
-                        color: Colors.green[300],
-                        size: 16,
-                      ),
-                      label: Text(
-                        'รายการงานซ่อม',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: Fonts.Fontnormal.fontFamily,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-          ],
+        title: Text(
+          'รายงานสรุป',
+          style: TextStyle(fontFamily: Fonts.FontBold.fontFamily),
         ),
-        actions: [
-          //Keep this empty, or remove entirely. Important!
-        ],
       ),
       body:
           _isLoading
@@ -494,189 +518,27 @@ class _DashboardPageState extends State<DashboardPage> {
                       alignment:
                           WrapAlignment.start, // จัดตำแหน่ง widget ใน Wrap
                       children: [
-                        Container(
-                          width: Responsive.isMobile(context) ? 175 : 360,
-                          height: Responsive.isMobile(context) ? 85 : 100,
-                          padding: const EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.purple[300],
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CheckoutMtReport(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child:
+                              Responsive.isMobile(context)
+                                  ? Wrap(
+                                    // Wrap is good for mobile to stack vertically
+                                    alignment:
+                                        WrapAlignment
+                                            .center, // Center align items
+                                    spacing: 8.0, // Horizontal space
+                                    runSpacing: 8.0, // Vertical space
+                                    children:
+                                        _buildStatBoxes(), // Use a helper function
+                                  )
+                                  : Row(
+                                    // For larger screens, use a Row
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children:
+                                        _buildStatBoxes(), // Use a helper function
                                   ),
-                                );
-                              },
-                              child: Center(
-                                child: Text(
-                                  Responsive.isMobile(context)
-                                      ? 'จำนวนการเบิก\nวัสดุทั้งหมด: $_totalOrderCount'
-                                      : 'จำนวนการเบิกวัสดุทั้งหมด:   $_totalOrderCount',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Fonts.Fontnormal.fontFamily,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(width: 16, height: 100),
-                        Container(
-                          width: Responsive.isMobile(context) ? 175 : 360,
-                          height: Responsive.isMobile(context) ? 85 : 100,
-                          padding: const EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.green[300],
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => MaintenanceReport(
-                                          token: widget.token,
-                                        ),
-                                  ),
-                                );
-                              },
-                              child: Center(
-                                child: Text(
-                                  Responsive.isMobile(context)
-                                      ? 'จำนวนการแจ้ง\nซ่อมทั้งหมด: $_totalMaintenCount'
-                                      : 'จำนวนการแจ้งซ่อมทั้งหมด: $_totalMaintenCount',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Fonts.Fontnormal.fontFamily,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16, height: 100),
-                        Container(
-                          width: Responsive.isMobile(context) ? 175 : 360,
-                          height: Responsive.isMobile(context) ? 85 : 100,
-                          padding: const EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.orange[300],
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            EquipmentPage(token: widget.token),
-                                  ),
-                                );
-                              },
-                              child: Center(
-                                child: Text(
-                                  Responsive.isMobile(context)
-                                      ? 'จำนวนครุภัณฑ์\nทั้งหมด: $_totalEqCount'
-                                      : 'จำนวนครุภัณฑ์ทั้งหมด:   $_totalEqCount',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Fonts.Fontnormal.fontFamily,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(width: 16, height: 100),
-                        Container(
-                          width: Responsive.isMobile(context) ? 175 : 360,
-                          height: Responsive.isMobile(context) ? 85 : 100,
-                          padding: const EdgeInsets.all(16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.pink[300],
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) =>
-                                            MaterialHome(token: widget.token),
-                                  ),
-                                );
-                              },
-                              child: Center(
-                                child: Text(
-                                  Responsive.isMobile(context)
-                                      ? 'จำนวน\nวัสดุทั้งหมด: $_totalMtCount'
-                                      : 'จำนวนวัสดุทั้งหมด:   $_totalMtCount',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: Fonts.Fontnormal.fontFamily,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ],
                     ),

@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:ems_condb/eqt_page/show_detail_eq.dart';
+import 'package:ems_condb/eqt_page/test/insert_eq.dart';
 import 'package:ems_condb/eqt_page/util/showproduct.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/responsive.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'util/insert_eq.dart';
 import 'package:ems_condb/api_config.dart';
 
@@ -28,10 +31,11 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
   List filteredData = [];
   String searchText = '';
   String userName = '';
-  String userRole = ''; // เพิ่ม userRole
+  String userRole = '';
+  bool isTableView = false;
 
   Future<void> getrecord(String eqtName) async {
-    String uri = "${baseUrl}view_eq.php";
+    String uri = "${baseUrl}view_equipment.php";
     try {
       var response = await http.get(Uri.parse(uri));
       final List<dynamic> allData = jsonDecode(response.body);
@@ -46,17 +50,19 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
             allData
                 .where(
                   (data) =>
-                      data['eq_type'] == eqtName && data['user_id'] == userName,
+                      data['eq_type'] == eqtName &&
+                      data['user_name'] == userName,
                 )
                 .toList();
       }
 
       // เรียงลำดับข้อมูลโดยให้ Inactive อยู่ล่างสุด
       filteredList.sort((a, b) {
-        if (a['eq_status'] == 'Inactive' && b['eq_status'] != 'Inactive') {
+        if (a['eq_status'] == 'รอแทงจำหน่าย' &&
+            b['eq_status'] != 'รอแทงจำหน่าย') {
           return 1; // a (Inactive) ควรอยู่หลัง b
-        } else if (a['eq_status'] != 'Inactive' &&
-            b['eq_status'] == 'Inactive') {
+        } else if (a['eq_status'] != 'รอแทงจำหน่าย' &&
+            b['eq_status'] == 'รอแทงจำหน่าย') {
           return -1; // a ควรอยู่ก่อน b (Inactive)
         } else {
           return 0; // ไม่เปลี่ยนแปลงลำดับ
@@ -138,7 +144,7 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
       appBar: AppBar(
         title: Text(
           widget.eqtName,
-          style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+          style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
         ),
         backgroundColor: const Color(0xFFFFB74B),
         actions: [
@@ -147,7 +153,10 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InsertEq()),
+                  // MaterialPageRoute(builder: (context) => const InsertEq()),
+                  MaterialPageRoute(
+                    builder: (context) => const AddEquipmentPage(),
+                  ),
                 );
               },
               icon: const Icon(Icons.add),
@@ -156,7 +165,7 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
       ),
       body: Center(
         child: SizedBox(
-          width: Responsive.isMobile(context) ? double.infinity : 700,
+          width: Responsive.isMobile(context) ? double.infinity : 1000,
           child: Column(
             children: [
               Padding(
@@ -172,7 +181,7 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
                                   .where(
                                     (item) =>
                                         (userRole == 'Admin' ||
-                                            item['user_id'] == userName) &&
+                                            item['user_name'] == userName) &&
                                         (item['eq_brand']
                                                 .toLowerCase()
                                                 .contains(
@@ -183,12 +192,17 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
                                                 .contains(
                                                   searchText.toLowerCase(),
                                                 ) ||
-                                            item['user_id']
+                                            item['user_name']
                                                 .toLowerCase()
                                                 .contains(
                                                   searchText.toLowerCase(),
                                                 ) ||
-                                            item['eq_serial']
+                                            item['HN_id']
+                                                .toLowerCase()
+                                                .contains(
+                                                  searchText.toLowerCase(),
+                                                ) ||
+                                            item['eq_name']
                                                 .toLowerCase()
                                                 .contains(
                                                   searchText.toLowerCase(),
@@ -241,6 +255,26 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
                     SizedBox(height: 10),
                   ],
                 ),
+              if (filteredData
+                  .isNotEmpty) // เพิ่มเงื่อนไขเพื่อแสดงปุ่มเมื่อมีข้อมูล
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ), // เพิ่ม padding ให้ปุ่ม
+                  child: Align(
+                    alignment: Alignment.centerRight, // จัดปุ่มไปทางขวา
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isTableView = !isTableView;
+                        });
+                      },
+                      icon: Icon(
+                        isTableView ? Icons.view_module : Icons.table_chart,
+                      ),
+                    ),
+                  ),
+                ),
               Expanded(
                 child:
                     filteredData.isEmpty
@@ -248,89 +282,209 @@ class _OfficeEqPageState extends State<OfficeEqPage> {
                           child: Text(
                             "ไม่มีข้อมูล",
                             style: TextStyle(
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                              fontFamily: Fonts.Fontnormal.fontFamily,
                             ),
                           ),
                         )
-                        : GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio:
-                                    Responsive.isMobile(context) ? 0.85 : 1,
-                              ),
-                          itemCount: filteredData.length,
-                          itemBuilder: (context, index) {
-                            final filteredData = this.filteredData[index];
-                            final String eq_id = filteredData['eq_id'] ?? '';
-                            final String id = filteredData['eq_serial'] ?? '';
-                            final String brand = filteredData['eq_brand'] ?? '';
-                            final String name = filteredData['eq_model'] ?? '';
-                            final String image =
-                                (baseUrl + filteredData["eq_img"] ?? "");
-                            final String user = filteredData['user_id'] ?? '';
-                            final String type = filteredData['eq_type'] ?? '';
-                            final String price = filteredData['eq_price'] ?? '';
-                            final String status =
-                                filteredData['eq_status'] ?? '';
-                            final String date = filteredData['eq_date'] ?? '';
-                            final String warranty =
-                                filteredData['eq_warran'] ?? '';
-
-                            return SafeArea(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            // print('${widget.token}');
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (context) => ShowDetail(
-                                                      id: id,
-                                                      name: name,
-                                                      image: image,
-                                                      brand: brand,
-                                                      user: user,
-                                                      type: type,
-                                                      price: price,
-                                                      date: date,
-                                                      warranty: warranty,
-                                                      status: status,
-                                                    ),
-                                              ),
-                                            );
-                                          },
-                                          child: Showproduct(
-                                            status: status,
-                                            brand: brand,
-                                            blockName: name,
-                                            blockImage: image,
-                                            blockHN: id,
-                                            user: user,
-                                            eqId: eq_id,
-                                            onRefresh: () {
-                                              getrecord(widget.eqtName);
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        : isTableView
+                        ? _buildTableView()
+                        : _buildGridView(),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridView() {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: Responsive.isMobile(context) ? 2 : 3,
+        childAspectRatio: Responsive.isMobile(context) ? 0.85 : 0.75,
+      ),
+      itemCount: filteredData.length,
+      itemBuilder: (context, index) {
+        final filteredData = this.filteredData[index];
+        final String pricef =
+            filteredData['eq_price'] ?? '0.00'; // เก็บ price เป็น String
+        final double parsedPrice =
+            double.tryParse(pricef) ?? 0.00; // แปลงเป็น double
+        final formattedPrice = NumberFormat("#,###.00").format(parsedPrice);
+        final String eq_id = filteredData['HN_id'] ?? '';
+        final String id = filteredData['HN_id'] ?? '';
+        final String eq_name = filteredData['eq_name'] ?? '';
+        final String brand = filteredData['eq_brand'] ?? '';
+        final String name = filteredData['eq_model'] ?? '';
+        final String image = (baseUrl + filteredData["eq_img"] ?? "");
+        final String user = filteredData['user_name'] ?? '';
+        final String type = filteredData['eq_type'] ?? '';
+        final String price = formattedPrice;
+        final String status = filteredData['eq_status'] ?? '';
+        final String buydate = filteredData['eq_buydate'] ?? '';
+        final String date = filteredData['eq_date'] ?? '';
+        final String warranty = filteredData['eq_warran'] ?? '';
+
+        return SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // print('${widget.token}');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ShowDetail(
+                                  id: id,
+                                  name: name,
+                                  image: image,
+                                  brand: brand,
+                                  user: user,
+                                  type: type,
+                                  price: price,
+                                  date: date,
+                                  warranty: warranty,
+                                  status: status,
+                                  buydate: buydate,
+                                  onRefresh: () {
+                                    getrecord(widget.eqtName);
+                                  },
+                                  token: widget.token,
+                                ),
+                          ),
+                        );
+                      },
+                      child: Showproduct(
+                        status: status,
+                        brand: brand,
+                        blockName: name,
+                        blockImage: image,
+                        blockHN: id,
+                        user: user,
+                        eqId: eq_id,
+                        name: eq_name,
+                        buyDate: buydate,
+                        date: date,
+                        warranty: warranty,
+                        price: price,
+                        token: widget.token,
+                        onRefresh: () {
+                          getrecord(widget.eqtName);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTableView() {
+    return Expanded(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: DataTable(
+            showCheckboxColumn: false,
+            columns: const <DataColumn>[
+              DataColumn(label: Text('เลขครุภัณฑ์')),
+              DataColumn(label: Text('ชื่อครุภัณฑ์')),
+              DataColumn(label: Text('ยี่ห้อ')),
+              DataColumn(label: Text('รุ่น')),
+              DataColumn(label: Text('ผู้ถือครอง')),
+              DataColumn(label: Text('สถานะ')),
+              DataColumn(label: Text('ราคา')),
+              DataColumn(label: Text('ระยะเวลาประกัน')),
+            ],
+            rows:
+                filteredData.map((data) {
+                  final String pricef =
+                      data['eq_price'] ?? '0.00'; // เก็บ price เป็น String
+                  final double parsedPrice =
+                      double.tryParse(pricef) ?? 0.00; // แปลงเป็น double
+                  final formattedPrice = NumberFormat(
+                    "#,###.00",
+                  ).format(parsedPrice);
+                  final String eq_id = data['HN_id'] ?? '';
+                  final String id = data['HN_id'] ?? '';
+                  final String eq_name = data['eq_name'] ?? '';
+                  final String brand = data['eq_brand'] ?? '';
+                  final String name = data['eq_model'] ?? '';
+                  final String image = (baseUrl + data["eq_img"] ?? "");
+                  final String user = data['user_name'] ?? '';
+                  final String type = data['eq_type'] ?? '';
+                  final String price = formattedPrice;
+                  final String status = data['eq_status'] ?? '';
+                  final String buydate = data['eq_buydate'] ?? '';
+                  final String date = data['eq_date'] ?? '';
+                  final String warranty = data['eq_warran'] ?? '';
+
+                  return DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text(id)),
+                      DataCell(Text(eq_name)),
+                      DataCell(Text(brand)),
+                      DataCell(Text(name)),
+                      DataCell(Text(user)),
+                      DataCell(
+                        Text(
+                          status,
+                          style: TextStyle(
+                            color:
+                                status == 'กำลังใช้งาน' || status == 'สำรอง'
+                                    ? Colors.green
+                                    : status == 'ระหว่างซ่อม' ||
+                                        status == 'ชำรุด'
+                                    ? Colors.orange
+                                    : status == 'รอแทงจำหน่าย'
+                                    ? Colors.red
+                                    : Colors.black,
+                          ),
+                        ),
+                      ),
+                      DataCell(Text(price)),
+                      DataCell(Text(warranty)),
+                    ],
+                    onSelectChanged: (isSelected) {
+                      if (isSelected != null && isSelected) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => ShowDetail(
+                                  id: id,
+                                  name: name,
+                                  image: image,
+                                  brand: brand,
+                                  user: user,
+                                  type: type,
+                                  price: price,
+                                  buydate: buydate,
+                                  date: date,
+                                  warranty: warranty,
+                                  status: status,
+                                  token: widget.token,
+                                  onRefresh: () {
+                                    getrecord(widget.eqtName);
+                                  },
+                                ),
+                          ),
+                        );
+                      }
+                    },
+                  );
+                }).toList(),
           ),
         ),
       ),

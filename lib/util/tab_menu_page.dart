@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../page/dashboard.dart';
 import '../page/user_page.dart';
+import '../test/navbar.dart';
 
 class TabMenuPage extends StatefulWidget {
   final String token;
@@ -29,7 +30,8 @@ class _TabMenuPageState extends State<TabMenuPage> {
           body: TabBarView(
             children: [
               // const Center(child: Text('Dashboard')),
-              Center(child: DashboardPage(token: widget.token)),
+              // Center(child: DashboardPage(token: widget.token)),
+              Center(child: NavbarPage(token: widget.token)),
               Center(child: HomePage(token: widget.token)),
               Center(child: UserPage(token: widget.token)),
             ],

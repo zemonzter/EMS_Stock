@@ -289,7 +289,7 @@ class _ShowDetailState extends State<ShowDetail> {
                                         fontFamily: Fonts.Fontnormal.fontFamily,
                                         fontSize:
                                             Responsive.isDesktop(context)
-                                                ? 22.0
+                                                ? 20.0
                                                 : 16.0,
                                       ),
                                     ),
@@ -312,7 +312,7 @@ class _ShowDetailState extends State<ShowDetail> {
                                               Fonts.Fontnormal.fontFamily,
                                           fontSize:
                                               Responsive.isDesktop(context)
-                                                  ? 22.0
+                                                  ? 20.0
                                                   : 16.0,
                                         ),
                                       ),

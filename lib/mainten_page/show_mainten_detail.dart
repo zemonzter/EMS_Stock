@@ -1,4 +1,5 @@
 import 'package:ems_condb/mainten_page/util/fullscreen_img.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +31,7 @@ class ShowMaintenDetail extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           '$name',
-          style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+          style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
         ),
       ),
       body: SingleChildScrollView(
@@ -50,49 +51,49 @@ class ShowMaintenDetail extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       Text(
                         'เลขครุภัณฑ์: $hn',
                         style: TextStyle(
                           fontSize: 16.0,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       Text(
                         'ชื่อครุภัณฑ์: $name',
                         style: TextStyle(
                           fontSize: 16.0,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       Text(
                         'รายละเอียด: $detail',
                         style: TextStyle(
                           fontSize: 16.0,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       Text(
                         'วันที่แจ้ง: $date',
                         style: TextStyle(
                           fontSize: 16.0,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       Text(
                         'ผู้แจ้ง: $user',
                         style: TextStyle(
                           fontSize: 16.0,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       Text(
                         'สถานะ: $status',
                         style: TextStyle(
                           fontSize: 16.0,
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
 

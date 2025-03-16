@@ -4,6 +4,7 @@ import 'package:ems_condb/mt_page/checkout/admin_ap.dart';
 import 'package:ems_condb/mt_page/checkout/checkout_mt_report.dart';
 import 'package:ems_condb/mt_page/checkout/checkout_report.dart';
 import 'package:ems_condb/mt_page/material_consum.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -135,7 +136,7 @@ class _MaterialHomeState extends State<MaterialHome> {
           "วัสดุ",
           style: TextStyle(
             color: Colors.white,
-            fontFamily: GoogleFonts.mali().fontFamily,
+            fontFamily: Fonts.Fontnormal.fontFamily,
           ),
         ),
         backgroundColor: const Color(0xFF7E0101),
@@ -203,7 +204,7 @@ class _MaterialHomeState extends State<MaterialHome> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           fontFamily:
-                                              GoogleFonts.mali().fontFamily,
+                                              Fonts.Fontnormal.fontFamily,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),
@@ -239,7 +240,7 @@ class _MaterialHomeState extends State<MaterialHome> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             fontFamily:
-                                                GoogleFonts.mali().fontFamily,
+                                                Fonts.Fontnormal.fontFamily,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -293,7 +294,7 @@ class _MaterialHomeState extends State<MaterialHome> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           fontFamily:
-                                              GoogleFonts.mali().fontFamily,
+                                              Fonts.Fontnormal.fontFamily,
                                         ),
                                         textAlign: TextAlign.center,
                                       ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ems_condb/api_config.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -47,7 +48,7 @@ class _BudgetFormState extends State<BudgetForm> {
             SnackBar(
               content: Text(
                 'เพิ่มข้อมูลงบประมาณสำเร็จ',
-                style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
               ),
               backgroundColor: Colors.green,
             ),
@@ -65,7 +66,7 @@ class _BudgetFormState extends State<BudgetForm> {
             SnackBar(
               content: Text(
                 'เกิดข้อผิดพลาด: ${response['message'] ?? 'ไม่สามารถเพิ่มข้อมูลงบประมาณได้'}',
-                style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
               ),
               backgroundColor: Colors.red,
             ),
@@ -77,7 +78,7 @@ class _BudgetFormState extends State<BudgetForm> {
           SnackBar(
             content: Text(
               'เกิดข้อผิดพลาด: $e',
-              style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+              style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
             ),
             backgroundColor: Colors.red,
           ),
@@ -89,7 +90,7 @@ class _BudgetFormState extends State<BudgetForm> {
       //   SnackBar(
       //     content: Text(
       //       'กรุณากรอกข้อมูลให้ครบถ้วน', // Correct message.
-      //       style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+      //       style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
       //     ),
       //     backgroundColor: Colors.red, // Good practice: red for errors
       //   ),
@@ -108,7 +109,7 @@ class _BudgetFormState extends State<BudgetForm> {
             "ฟอร์มงบประมาณ",
             style: TextStyle(
               color: Colors.white,
-              fontFamily: GoogleFonts.mali().fontFamily,
+              fontFamily: Fonts.Fontnormal.fontFamily,
             ),
           ),
           backgroundColor: const Color(0xFF7E0101),
@@ -137,8 +138,7 @@ class _BudgetFormState extends State<BudgetForm> {
                                     child: Text(
                                       type,
                                       style: TextStyle(
-                                        fontFamily:
-                                            GoogleFonts.mali().fontFamily,
+                                        fontFamily: Fonts.Fontnormal.fontFamily,
                                       ),
                                     ),
                                   ),
@@ -159,7 +159,7 @@ class _BudgetFormState extends State<BudgetForm> {
                         decoration: InputDecoration(
                           labelText: "ประเภทงบประมาณ",
                           labelStyle: TextStyle(
-                            fontFamily: GoogleFonts.mali().fontFamily,
+                            fontFamily: Fonts.Fontnormal.fontFamily,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -172,7 +172,7 @@ class _BudgetFormState extends State<BudgetForm> {
                         decoration: InputDecoration(
                           labelText: "รายละเอียดงบประมาณ",
                           labelStyle: TextStyle(
-                            fontFamily: GoogleFonts.mali().fontFamily,
+                            fontFamily: Fonts.Fontnormal.fontFamily,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -191,7 +191,7 @@ class _BudgetFormState extends State<BudgetForm> {
                         decoration: InputDecoration(
                           labelText: "จำนวนเงิน",
                           labelStyle: TextStyle(
-                            fontFamily: GoogleFonts.mali().fontFamily,
+                            fontFamily: Fonts.Fontnormal.fontFamily,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -212,9 +212,9 @@ class _BudgetFormState extends State<BudgetForm> {
                       TextFormField(
                         controller: budgetyear,
                         decoration: InputDecoration(
-                          labelText: "ปีงบประมาณ",
+                          labelText: "ปีงบประมาณ (พ.ศ.)",
                           labelStyle: TextStyle(
-                            fontFamily: GoogleFonts.mali().fontFamily,
+                            fontFamily: Fonts.Fontnormal.fontFamily,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -222,7 +222,7 @@ class _BudgetFormState extends State<BudgetForm> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'กรุณากรอกปีงบประมาณ';
+                            return 'กรุณากรอกปีงบประมาณ (พ.ศ.)';
                           }
                           if (int.tryParse(value) == null) {
                             return 'กรุณากรอกตัวเลข';
@@ -248,7 +248,7 @@ class _BudgetFormState extends State<BudgetForm> {
                                 'ยืนยัน',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontFamily: GoogleFonts.mali().fontFamily,
+                                  fontFamily: Fonts.Fontnormal.fontFamily,
                                 ),
                               ),
                             ),
@@ -260,7 +260,7 @@ class _BudgetFormState extends State<BudgetForm> {
                               child: Text(
                                 'ยกเลิก',
                                 style: TextStyle(
-                                  fontFamily: GoogleFonts.mali().fontFamily,
+                                  fontFamily: Fonts.Fontnormal.fontFamily,
                                 ),
                               ),
                             ),

@@ -1,4 +1,5 @@
 import 'package:ems_condb/login.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        fontFamily: GoogleFonts.kanit().fontFamily,
+        fontFamily: Fonts.Fontnormal.fontFamily,
       ),
       home: const LoginPage(),
     );

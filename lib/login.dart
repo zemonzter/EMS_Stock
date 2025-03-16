@@ -1,4 +1,5 @@
 import 'package:ems_condb/api_config.dart';
+import 'package:ems_condb/util/admin_tab.dart';
 import 'package:ems_condb/util/tab_menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -82,11 +83,9 @@ class _LoginPageState extends State<LoginPage> {
       );
       final userName = userData['name'];
 
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('Login successful! Welcome, $userName'),
-      //   ),
-      // );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('เข้าสู่ระบบสำเร็จ ยินดีต้อนรับ, $userName')),
+      );
 
       return userName; // return username
     } else {
@@ -110,13 +109,16 @@ class _LoginPageState extends State<LoginPage> {
         final userExists = data.any((user) => user['user_name'] == userName);
 
         if (userExists) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('User "$userName" found in the database.')),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text('ผู้ใช้ "$userName" found in the database.'),
+          //   ),
+          // );
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => TabMenuPage(token: _token!),
+              // builder: (context) => TabMenuPage(token: _token!),
+              builder: (context) => TabbedNavbarPage(token: _token!),
             ),
           );
         } else {
@@ -194,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 50),
                       ElevatedButton(
                         onPressed: _login,
-                        child: const Text('Login'),
+                        child: const Text('ล็อกอิน'),
                       ),
                     ],
                   ),

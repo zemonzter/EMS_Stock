@@ -11,8 +11,6 @@ class EditMtPage extends StatefulWidget {
   final String unit;
   final String imageUrl;
   final String url;
-  // final VoidCallback? onRefresh; // Remove this - we're passing data back now.
-  // Use a callback that accepts the updated data.
   final Function(String, String, String)? onUpdate;
 
   const EditMtPage({
@@ -23,7 +21,7 @@ class EditMtPage extends StatefulWidget {
     required this.unit,
     required this.imageUrl,
     required this.url,
-    this.onUpdate, // Include it in the constructor
+    this.onUpdate,
   }) : super(key: key);
 
   @override
@@ -60,7 +58,6 @@ class _EditMtPageState extends State<EditMtPage> {
     String content, {
     bool shouldPop = false,
   }) {
-    // Add optional parameter
     showDialog(
       context: context,
       builder: (context) {
@@ -74,10 +71,10 @@ class _EditMtPageState extends State<EditMtPage> {
                 style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
               ),
               onPressed: () {
-                Navigator.of(context).pop(); // Always pop the dialog
+                Navigator.of(context).pop();
                 if (shouldPop) {
-                  // Only pop the Edit page if shouldPop is true
-                  //  Navigator.of(context).pop(); // Don't pop here.  Pop AFTER onRefresh.
+                  Navigator.of(context).pop(); // Pop the Edit page
+                  Navigator.of(context).pop();
                 }
               },
             ),
@@ -85,6 +82,58 @@ class _EditMtPageState extends State<EditMtPage> {
         );
       },
     );
+  }
+
+  Future<void> _deleteMT(String mtId) async {
+    String uri = "${baseUrl}delete_mt.php";
+    try {
+      final response = await http
+          .post(Uri.parse(uri), body: {'mt_id': mtId})
+          .timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final dynamic decodedResponse = json.decode(response.body);
+        if (decodedResponse is Map && decodedResponse['success'] == 'true') {
+          if (mounted) {
+            _showDialog(
+              context,
+              "เสร็จสิ้น",
+              "วัสดุถูกลบแล้ว",
+              shouldPop: true, // Pop the page after deletion
+            );
+          }
+        } else {
+          if (mounted) {
+            _showDialog(
+              context,
+              "Error",
+              "Failed to delete material: ${decodedResponse['message']}",
+            );
+          }
+        }
+      } else {
+        if (mounted) {
+          _showDialog(
+            context,
+            "Error",
+            "HTTP request failed: ${response.statusCode}",
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        _showDialog(context, "Error", "Failed to delete material: $e");
+      }
+    }
+  }
+
+  void _showError(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    }
+    print(message);
   }
 
   @override
@@ -142,11 +191,56 @@ class _EditMtPageState extends State<EditMtPage> {
               ),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _saveChanges();
-              },
-              child: Text('บันทึกข้อมูล'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _saveChanges();
+                  },
+                  child: Text('บันทึกข้อมูล'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text(
+                            'ยืนยันการลบประเภทครุภัณฑ์',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          content: const Text(
+                            'คุณแน่ใจหรือไม่ว่าต้องการลบประเภทครุภัณฑ์นี้?',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                _deleteMT(widget.id); // Use widget.id directly
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('ยืนยัน'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('ยกเลิก'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red[600],
+                  ),
+                  child: const Text(
+                    'ลบ',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -159,7 +253,6 @@ class _EditMtPageState extends State<EditMtPage> {
         _stockController.text.isEmpty ||
         _unitController.text.isEmpty) {
       if (mounted) {
-        // Check mounted before showing the dialog
         _showDialog(context, "ข้อผิดพลาด", 'กรุณากรอกข้อมูลภายในฟอร์ม');
       }
       return;
@@ -190,18 +283,14 @@ class _EditMtPageState extends State<EditMtPage> {
               shouldPop: true,
             );
 
-            // Call onUpdate with the *new* values.  This is KEY.
             widget.onUpdate?.call(
               _nameController.text,
               _stockController.text,
               _unitController.text,
             );
-
-            Navigator.pop(context); // Pop happens AFTER onRefresh.
           }
         } else {
           if (mounted) {
-            // Check mounted before showing dialog
             _showDialog(
               context,
               "Error",
@@ -211,13 +300,11 @@ class _EditMtPageState extends State<EditMtPage> {
         }
       } else {
         if (mounted) {
-          // Check mounted before showing dialog
           _showDialog(context, "Error", "Server error: ${response.statusCode}");
         }
       }
     } catch (e) {
       if (mounted) {
-        // Check mounted before showing dialog
         _showDialog(context, "Error", "Exception: $e");
       }
     }

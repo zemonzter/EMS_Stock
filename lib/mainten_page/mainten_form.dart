@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ems_condb/api_config.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -163,11 +164,11 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
               return AlertDialog(
                 title: Text(
                   'ส่งคำขอแจ้งซ่อมสำเร็จ',
-                  style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                  style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                 ),
                 content: Text(
                   'รอการดำเนินงานจากเจ้าหน้าที่',
-                  style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                  style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                 ),
                 actions: [
                   TextButton(
@@ -176,9 +177,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                     },
                     child: Text(
                       'ตกลง',
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.mali().fontFamily,
-                      ),
+                      style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                     ),
                   ),
                 ],
@@ -209,11 +208,11 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
             return AlertDialog(
               title: Text(
                 'ส่งคำขอแจ้งซ่อมสำเร็จ',
-                style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
               ),
               content: Text(
                 'รอการดำเนินงานจากเจ้าหน้าที่',
-                style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
               ),
               actions: [
                 TextButton(
@@ -222,7 +221,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                   },
                   child: Text(
                     'ตกลง',
-                    style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                    style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                   ),
                 ),
               ],
@@ -240,7 +239,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
         SnackBar(
           content: Text(
             'กรุณากรอกข้อมูลให้ครบถ้วน',
-            style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+            style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
           ),
           backgroundColor: Colors.orange[300],
         ),
@@ -274,7 +273,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
           "แจ้งซ่อม",
           style: TextStyle(
             color: Colors.white,
-            fontFamily: GoogleFonts.mali().fontFamily,
+            fontFamily: Fonts.Fontnormal.fontFamily,
           ),
         ),
         backgroundColor: const Color(0xFF7E0101),
@@ -338,7 +337,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                             ),
                             labelText: "เลขครุภัณฑ์",
                             labelStyle: TextStyle(
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                              fontFamily: Fonts.Fontnormal.fontFamily,
                             ),
                             suffixIcon: IconButton(
                               icon: const Icon(Icons.search),
@@ -364,12 +363,10 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                         ),
                         labelText: "ชื่อครุภัณฑ์",
                         labelStyle: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.mali().fontFamily,
-                      ),
+                      style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
@@ -380,7 +377,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                         ),
                         labelText: "วันที่แจ้งซ่อม",
                         labelStyle: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       onTap: () async {
@@ -417,7 +414,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                         ),
                         labelText: "อาการ/ปัญหา",
                         labelStyle: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                       validator: (value) {
@@ -460,7 +457,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                               ),
                               labelText: 'ผู้แจ้งซ่อม: ${userData['name']}',
                               labelStyle: TextStyle(
-                                fontFamily: GoogleFonts.mali().fontFamily,
+                                fontFamily: Fonts.Fontnormal.fontFamily,
                               ),
                             ),
                           );
@@ -481,7 +478,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                       child: Text(
                         'Choose image',
                         style: TextStyle(
-                          fontFamily: GoogleFonts.mali().fontFamily,
+                          fontFamily: Fonts.Fontnormal.fontFamily,
                         ),
                       ),
                     ),
@@ -501,7 +498,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                               'ยืนยัน',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontFamily: GoogleFonts.mali().fontFamily,
+                                fontFamily: Fonts.Fontnormal.fontFamily,
                               ),
                             ),
                           ),
@@ -513,7 +510,7 @@ class _MaintenanceFormState extends State<MaintenanceForm> {
                             child: Text(
                               'ยกเลิก',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.mali().fontFamily,
+                                fontFamily: Fonts.Fontnormal.fontFamily,
                               ),
                             ),
                           ),

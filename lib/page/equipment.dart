@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:ems_condb/api_config.dart';
 import 'package:ems_condb/eqt_page/office_eq.dart';
+import 'package:ems_condb/eqt_page/test/view_equipment.dart';
 import 'package:ems_condb/eqt_page/util/insert_eq.dart';
 import 'package:ems_condb/user_page/settings/setting_eq/insert_eq_type.dart';
 // import 'package:ems_condb/util/block.dart';
 import 'package:ems_condb/util/eq_block.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -110,7 +112,7 @@ class _HomePageState extends State<EquipmentPage> {
           "ประเภทครุภัณฑ์",
           style: TextStyle(
             color: Colors.white,
-            fontFamily: GoogleFonts.mali().fontFamily,
+            fontFamily: Fonts.Fontnormal.fontFamily,
           ),
         ),
         backgroundColor: const Color(0xFF7E0101),
@@ -169,6 +171,9 @@ class _HomePageState extends State<EquipmentPage> {
                                         token: widget.token ?? '',
                                       ),
                                 ),
+                                // MaterialPageRoute(
+                                //   builder: (context) => EquipmentList(),
+                                // ),
                               );
                             },
                           ),

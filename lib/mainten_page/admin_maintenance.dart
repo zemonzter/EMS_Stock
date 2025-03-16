@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:ems_condb/api_config.dart';
+import 'package:ems_condb/mainten_page/show_mainten_detail.dart';
+import 'package:ems_condb/util/font.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -159,7 +161,7 @@ class _AdminMaintenanceState extends State<AdminMaintenance> {
           SnackBar(
             content: Text(
               'อัพเดทสถานะเรียบร้อย',
-              style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+              style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
             ),
           ),
         );
@@ -170,7 +172,7 @@ class _AdminMaintenanceState extends State<AdminMaintenance> {
           SnackBar(
             content: Text(
               'Failed to update status',
-              style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+              style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
             ),
           ),
         );
@@ -181,7 +183,7 @@ class _AdminMaintenanceState extends State<AdminMaintenance> {
         SnackBar(
           content: Text(
             'Error updating status',
-            style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+            style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
           ),
         ),
       );
@@ -195,7 +197,7 @@ class _AdminMaintenanceState extends State<AdminMaintenance> {
         title: Text(
           'รายการงานซ่อม',
           style: TextStyle(
-            fontFamily: GoogleFonts.mali().fontFamily,
+            fontFamily: Fonts.Fontnormal.fontFamily,
             color: Colors.white,
           ),
         ),
@@ -207,7 +209,7 @@ class _AdminMaintenanceState extends State<AdminMaintenance> {
               ? Center(
                 child: Text(
                   'ไม่มีคำขอใหม่',
-                  style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+                  style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                 ),
               )
               : ListView.builder(
@@ -215,108 +217,129 @@ class _AdminMaintenanceState extends State<AdminMaintenance> {
                 itemBuilder: (context, index) {
                   final request = requests[index];
 
-                  return Card(
-                    margin: const EdgeInsets.all(8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'เลขแจ้งซ่อม: ${request['mainten_id']}',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.mali().fontFamily,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => ShowMaintenDetail(
+                                id: request["mainten_id"],
+                                name: request["eq_name"],
+                                date: request["mainten_date"],
+                                detail: request["mainten_detail"],
+                                user: request["user_mainten"],
+                                status: request["mainten_status"],
+                                img: (baseUrl + (request["mainten_img"] ?? '')),
+                                hn: request["eq_id"],
+                              ),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      margin: const EdgeInsets.all(8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'เลขแจ้งซ่อม: ${request['mainten_id']}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Fonts.Fontnormal.fontFamily,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'HN: ${request['eq_id']}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
+                                  ),
+                                  Text(
+                                    'ชื่อครุภัณฑ์: ${request['eq_name']}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
+                                  ),
+                                  Text(
+                                    'รายละเอียด: ${request['mainten_detail']}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
+                                  ),
+                                  Text(
+                                    'User: ${request['user_mainten']}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Date: ${request['mainten_date']}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: Fonts.Fontnormal.fontFamily,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  'HN: ${request['eq_id']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: GoogleFonts.mali().fontFamily,
-                                  ),
-                                ),
-                                Text(
-                                  'ชื่อครุภัณฑ์: ${request['eq_name']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: GoogleFonts.mali().fontFamily,
-                                  ),
-                                ),
-                                Text(
-                                  'รายละเอียด: ${request['mainten_detail']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: GoogleFonts.mali().fontFamily,
-                                  ),
-                                ),
-                                Text(
-                                  'User: ${request['user_mainten']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: GoogleFonts.mali().fontFamily,
-                                  ),
-                                ),
-                                Text(
-                                  'Date: ${request['mainten_date']}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: GoogleFonts.mali().fontFamily,
-                                  ),
+                                DropdownButton<String>(
+                                  value:
+                                      selectedStatuses[request['mainten_id']] ??
+                                      'แจ้งซ่อม', // Handle empty statusOptions
+
+                                  onChanged: (String? newValue) {
+                                    if (newValue != null) {
+                                      setState(() {
+                                        selectedStatuses[request['mainten_id']] =
+                                            newValue;
+                                      });
+                                      _updateStatus(
+                                        request['mainten_id'],
+                                        newValue,
+                                      ); // Pass mainten_status
+                                    }
+                                  },
+                                  items:
+                                      statusOptions
+                                          .map<DropdownMenuItem<String>>(
+                                            (
+                                              Map<String, dynamic> status,
+                                            ) => DropdownMenuItem<String>(
+                                              value:
+                                                  status['mainten_status'], // Use mainten_status here
+                                              child: Text(
+                                                status['mainten_status'], // Display mainten_status
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      Fonts
+                                                          .Fontnormal
+                                                          .fontFamily,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
                                 ),
                               ],
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DropdownButton<String>(
-                                value:
-                                    selectedStatuses[request['mainten_id']] ??
-                                    'แจ้งซ่อม', // Handle empty statusOptions
-
-                                onChanged: (String? newValue) {
-                                  if (newValue != null) {
-                                    setState(() {
-                                      selectedStatuses[request['mainten_id']] =
-                                          newValue;
-                                    });
-                                    _updateStatus(
-                                      request['mainten_id'],
-                                      newValue,
-                                    ); // Pass mainten_status
-                                  }
-                                },
-                                items:
-                                    statusOptions
-                                        .map<DropdownMenuItem<String>>(
-                                          (
-                                            Map<String, dynamic> status,
-                                          ) => DropdownMenuItem<String>(
-                                            value:
-                                                status['mainten_status'], // Use mainten_status here
-                                            child: Text(
-                                              status['mainten_status'], // Display mainten_status
-                                              style: TextStyle(
-                                                fontFamily:
-                                                    GoogleFonts.mali()
-                                                        .fontFamily,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                              ),
-                            ],
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );

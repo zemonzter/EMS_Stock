@@ -1,3 +1,4 @@
+import 'package:ems_condb/util/font.dart';
 import 'package:ems_condb/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -107,6 +108,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       }
     }
 
+    showDialog(
+      context: context,
+      barrierDismissible: false, // ป้องกันการปิด dialog ด้วยการแตะภายนอก
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
     // ส่งคำขออนุมัติ
     final url = Uri.parse('${baseUrl}request_approval.php');
     try {
@@ -117,6 +125,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           'items': jsonEncode(widget.cartItems),
         },
       );
+      Navigator.of(context).pop();
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -141,9 +150,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     },
                     child: Text(
                       'ตกลง',
-                      style: TextStyle(
-                        fontFamily: GoogleFonts.mali().fontFamily,
-                      ),
+                      style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
                     ),
                   ),
                 ],
@@ -237,7 +244,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       appBar: AppBar(
         title: Text(
           'Checkout',
-          style: TextStyle(fontFamily: GoogleFonts.mali().fontFamily),
+          style: TextStyle(fontFamily: Fonts.Fontnormal.fontFamily),
         ),
       ),
       body: Center(
@@ -265,13 +272,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         title: Text(
                           item['mt_name'],
                           style: TextStyle(
-                            fontFamily: GoogleFonts.mali().fontFamily,
+                            fontFamily: Fonts.Fontnormal.fontFamily,
                           ),
                         ),
                         subtitle: Text(
                           'จำนวน: ${item['quantity']} $unitId',
                           style: TextStyle(
-                            fontFamily: GoogleFonts.mali().fontFamily,
+                            fontFamily: Fonts.Fontnormal.fontFamily,
                           ),
                         ),
                       ),
@@ -298,9 +305,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     elevation: 5, // เพิ่มเงาให้กับปุ่ม
                   ),
                   child: Text(
-                    'Checkout',
+                    'เบิกวัสดุ',
                     style: TextStyle(
-                      fontFamily: GoogleFonts.mali().fontFamily,
+                      fontFamily: Fonts.Fontnormal.fontFamily,
                       fontSize: 18, // ขนาดตัวอักษร
                       fontWeight: FontWeight.bold, // ความหนาตัวอักษร
                     ),
